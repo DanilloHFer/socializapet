@@ -2214,38 +2214,7 @@
         </div>
     </section>
 
-    <!-- Products Section -->
-    <section id="loja" class="section">
-        <div class="container">
-            <h2 class="section-title">⭐ Nossos Destaques</h2>
-            <div class="products-grid">
-                <div class="product-card">
-                    <img src="https://picsum.photos/320/220?random=20" alt="Ração Premium">
-                    <div class="product-card-content">
-                        <h3>🥘 Ração Premium Super Pet</h3>
-                        <div class="product-price">R$ 89,90</div>
-                        <a href="#" class="btn btn-primary">👀 Ver Detalhes</a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <img src="https://picsum.photos/320/220?random=21" alt="Brinquedo Interativo">
-                    <div class="product-card-content">
-                        <h3>🎾 Brinquedo Interativo Kong</h3>
-                        <div class="product-price">R$ 45,90</div>
-                        <a href="#" class="btn btn-primary">👀 Ver Detalhes</a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <img src="https://picsum.photos/320/220?random=22" alt="Cama Confort">
-                    <div class="product-card-content">
-                        <h3>🛏️ Cama Confort Plus</h3>
-                        <div class="product-price">R$ 129,90</div>
-                        <a href="#" class="btn btn-primary">👀 Ver Detalhes</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- About Section -->
     <section id="sobre" class="section about">
@@ -2268,21 +2237,28 @@
     <section id="contato" class="section">
         <div class="container">
             <h2 class="section-title">📞 Fale Conosco</h2>
-            <form class="contact-form">
+            <form class="contact-form" id="contactForm" onsubmit="sendContactToWhatsApp(event)">
                 <div class="form-group">
-                    <label for="name">👤 Nome Completo</label>
-                    <input type="text" id="name" name="name" placeholder="Digite seu nome..." required>
+                    <label for="contactName">👤 Nome Completo</label>
+                    <input type="text" id="contactName" name="contactName" placeholder="Digite seu nome..." required>
                 </div>
                 <div class="form-group">
-                    <label for="email">📧 E-mail</label>
-                    <input type="email" id="email" name="email" placeholder="Digite seu e-mail..." required>
+                    <label for="contactPhone">📱 Telefone/WhatsApp</label>
+                    <input type="tel" id="contactPhone" name="contactPhone" placeholder="(11) 99999-9999" required>
                 </div>
                 <div class="form-group">
-                    <label for="message">💬 Mensagem</label>
-                    <textarea id="message" name="message" placeholder="Conte-nos como podemos ajudar você e seu pet... 🐾" required></textarea>
+                    <label for="contactEmail">📧 E-mail</label>
+                    <input type="email" id="contactEmail" name="contactEmail" placeholder="Digite seu e-mail..." required>
+                </div>
+                <div class="form-group">
+                    <label for="contactMessage">💬 Mensagem</label>
+                    <textarea id="contactMessage" name="contactMessage" placeholder="Conte-nos como podemos ajudar você e seu pet... 🐾" required></textarea>
                 </div>
                 <div class="form-submit">
-                    <button type="submit" class="btn btn-primary">📤 Enviar Mensagem</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span id="submitText">📤 Enviar Mensagem</span>
+                        <span id="loadingText" style="display: none;">⏳ Enviando...</span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -2807,6 +2783,129 @@
                 }, 10000);
             }
         });
+
+        // Function to send contact form to WhatsApp
+        function sendContactToWhatsApp(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const name = document.getElementById('contactName').value;
+            const phone = document.getElementById('contactPhone').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            // Show loading state
+            document.getElementById('submitText').style.display = 'none';
+            document.getElementById('loadingText').style.display = 'inline';
+            
+            // Format message for WhatsApp
+            let whatsappMessage = "📝 *NOVO CONTATO - SOCIALIZAPET*\n\n";
+            whatsappMessage += `👤 *Nome:* ${name}\n`;
+            whatsappMessage += `📱 *Telefone:* ${phone}\n`;
+            whatsappMessage += `📧 *E-mail:* ${email}\n\n`;
+            whatsappMessage += `💬 *Mensagem:*\n${message}\n\n`;
+            whatsappMessage += `📅 *Data:* ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}\n`;
+            whatsappMessage += `🌐 *Origem:* Site SocializaPet`;
+            
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+            
+            // WhatsApp number (replace with actual SocializaPet number)
+            const whatsappNumber = "5511999999999"; // SUBSTITUA PELO NÚMERO REAL
+            
+            // Create WhatsApp URL
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            
+            // Simulate sending delay for better UX
+            setTimeout(() => {
+                // Open WhatsApp in new tab (hidden from user initially)
+                const whatsappWindow = window.open(whatsappURL, '_blank');
+                
+                // Reset form
+                document.getElementById('contactForm').reset();
+                
+                // Reset button state
+                document.getElementById('submitText').style.display = 'inline';
+                document.getElementById('loadingText').style.display = 'none';
+                
+                // Show success message
+                showContactSuccess();
+                
+                // Optional: Close the WhatsApp window after a few seconds
+                // This allows the message to be sent but keeps the user on your site
+                setTimeout(() => {
+                    if (whatsappWindow && !whatsappWindow.closed) {
+                        whatsappWindow.focus(); // Ensure WhatsApp window is focused for sending
+                    }
+                }, 1000);
+                
+            }, 1500);
+        }
+        
+        // Show success message
+        function showContactSuccess() {
+            // Create success notification
+            const successDiv = document.createElement('div');
+            successDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+                color: white;
+                padding: 2rem;
+                border-radius: 20px;
+                text-align: center;
+                z-index: 10000;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                animation: successSlide 0.5s ease-out;
+                max-width: 400px;
+                width: 90%;
+            `;
+            
+            successDiv.innerHTML = `
+                <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">Mensagem Enviada!</h3>
+                <p style="margin-bottom: 1.5rem; opacity: 0.9;">
+                    Sua mensagem foi enviada com sucesso! Nossa equipe entrará em contato em breve.
+                </p>
+                <button onclick="this.parentElement.remove()" style="
+                    background: rgba(255,255,255,0.2);
+                    border: 1px solid rgba(255,255,255,0.3);
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-weight: 600;
+                ">Fechar</button>
+            `;
+            
+            // Add animation keyframes
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes successSlide {
+                    from {
+                        opacity: 0;
+                        transform: translate(-50%, -50%) scale(0.8);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translate(-50%, -50%) scale(1);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(successDiv);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (successDiv && successDiv.parentElement) {
+                    successDiv.remove();
+                    style.remove();
+                }
+            }, 5000);
+        }
     </script>
 </body>
 </html>

@@ -1,1 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Socializa - SocializaPet</title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="64x64" href="imagens/favicon-64x64.png?v=2">
+    <link rel="icon" type="image/png" sizes="48x48" href="imagens/favicon-48x48.png?v=2">
+    <link rel="icon" type="image/png" sizes="40x40" href="imagens/favicon-40x40.png?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="imagens/favicon-40x40.png?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="imagens/favicon-40x40.png?v=2">
+    <link rel="apple-touch-icon" href="imagens/apple-touch-icon.png?v=2">
+    <link rel="shortcut icon" type="image/x-icon" href="imagens/favicon-64x64.png?v=2">
+    <meta name="theme-color" content="#F28DB2">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Quicksand:wght@400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0597F2;
+            --primary-pink: #F28DB2;
+            --dark-blue: #03658C;
+            --accent-blue: #049DBF;
+            --light-bg: #F2F2F2;
+            --white: #FFFFFF;
+            --gradient-1: linear-gradient(135deg, #F28DB2 0%, #0597F2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --neon-pink: #ff0080;
+            --neon-blue: #00d4ff;
+            --purple: #6c5ce7;
+            --orange: #fd79a8;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #e17055;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--light-bg);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--gradient-1);
+            color: var(--white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--white);
+            font-size: 1.8rem;
+            font-weight: 800;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-4);
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://picsum.photos/1920/800?random=50') center/cover;
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            font-family: 'Fredoka One', cursive;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 20px;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            color: var(--dark-blue);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        .section strong {
+            color: var(--primary-pink);
+        }
+
+        /* Impact Cards */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .impact-card {
+            background: var(--gradient-1);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .impact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(242, 141, 178, 0.4);
+        }
+
+        .impact-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .impact-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Revenue Sources */
+        .revenue-sources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .revenue-item {
+            background: linear-gradient(135deg, rgba(5, 151, 242, 0.1), rgba(242, 141, 178, 0.1));
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .revenue-item:hover {
+            border-color: var(--primary-pink);
+            transform: translateY(-5px);
+        }
+
+        .revenue-item h4 {
+            color: var(--dark-blue);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .revenue-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Call to Action */
+        .cta {
+            background: var(--gradient-1);
+            color: var(--white);
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .cta h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-white {
+            background: var(--white);
+            color: var(--primary-pink);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--primary-pink);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-blue);
+            color: var(--white);
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-pink);
+            transform: translateY(-5px);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section {
+                padding: 2rem 1.5rem;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+            }
+
+            .main-content {
+                padding: 2rem 15px;
+            }
+
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .revenue-sources {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <img src="imagens/socializapet-logo.png" alt="SocializaPet Logo" width="35" height="35" style="margin-right: 10px;">
+                Socializa<span style="color: var(--primary-pink);">Pet</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">🏠 Home</a></li>
+                    <li><a href="index.html#sobre">💝 Sobre Nós</a></li>
+                    <li><a href="loja.html">🛍️ Loja</a></li>
+                    <li><a href="blog.html">📝 Blog</a></li>
+                    <li><a href="index.html#contato">📞 Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>🌍 Projeto Socializa</h1>
+            <p>Transformando vidas através do amor pelos pets, cuidado ambiental e solidariedade</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Nossa Missão -->
+        <section class="section">
+            <h2>💝 Nossa Missão</h2>
+            <p>O <strong>Projeto Socializa</strong> nasceu da convicção de que podemos criar um mundo melhor através de ações conscientes e solidárias. Não somos apenas uma loja de produtos pet - somos um movimento que une o amor pelos animais com a responsabilidade ambiental.</p>
+            
+            <p>Acreditamos que <strong>cada compra pode ser um ato de amor</strong> que vai além do seu pet. Quando você escolhe nossos produtos, está contribuindo diretamente para o resgate de animais abandonados e para a preservação do meio ambiente.</p>
+            
+            <p>Nossa filosofia é simples: <strong>prosperidade com propósito</strong>. Geramos renda de forma ética e destinamos parte significativa dos nossos resultados para causas que realmente importam.</p>
+        </section>
+
+        <!-- Como Funciona -->
+        <section class="section">
+            <h2>🔄 Como Funciona</h2>
+            
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <div class="icon">🛒</div>
+                    <h3>Você Compra</h3>
+                    <p>Produtos pet de qualidade premium, selecionados com carinho para seu companheiro</p>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="icon">💖</div>
+                    <h3>Nós Doamos</h3>
+                    <p>Parte da receita vai direto para ONGs de proteção animal e projetos ambientais</p>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="icon">🌱</div>
+                    <h3>Mundo Melhor</h3>
+                    <p>Juntos criamos um ciclo sustentável de amor, cuidado e preservação</p>
+                </div>
+            </div>
+
+            <p style="text-align: center; font-size: 1.2rem; color: var(--primary-pink); font-weight: 600; margin-top: 2rem;">
+                "Cada produto vendido = Mais animais resgatados + Mais árvores plantadas"
+            </p>
+        </section>
+
+        <!-- Nossas Fontes de Renda -->
+        <section class="section">
+            <h2>📊 Como Geramos Renda Sustentável</h2>
+            <p>Mantemos nossa independência financeira através de múltiplas fontes de receita éticas e transparentes:</p>
+            
+            <div class="revenue-sources">
+                <div class="revenue-item">
+                    <div class="icon">🛍️</div>
+                    <h4>Venda de Produtos</h4>
+                    <p>Produtos pet premium cuidadosamente selecionados para qualidade e bem-estar</p>
+                </div>
+                
+                <div class="revenue-item">
+                    <div class="icon">📱</div>
+                    <h4>Conteúdo Digital</h4>
+                    <p>Redes sociais, parcerias e conteúdo educativo sobre cuidados pet</p>
+                </div>
+                
+                <div class="revenue-item">
+                    <div class="icon">📚</div>
+                    <h4>Material Educativo</h4>
+                    <p>E-books, guias e conteúdo premium sobre bem-estar animal</p>
+                </div>
+                
+                <div class="revenue-item">
+                    <div class="icon">🎥</div>
+                    <h4>Canal no YouTube</h4>
+                    <p>Assinaturas e apoio da comunidade através de conteúdo de valor</p>
+                </div>
+            </div>
+
+            <p><strong>Importante:</strong> Não pedimos doações! Preferimos que você nos ajude consumindo nossos produtos e conteúdo, criando um ciclo sustentável de crescimento e impacto social.</p>
+        </section>
+
+        <!-- Transparência -->
+        <section class="section">
+            <h2>🔍 Transparência Total</h2>
+            <p>Acreditamos na <strong>transparência absoluta</strong> com nossa comunidade. Por isso, compartilhamos regularmente:</p>
+            
+            <ul style="font-size: 1.1rem; margin-left: 2rem; margin-bottom: 2rem;">
+                <li>📊 <strong>Percentual exato</strong> da receita destinada às doações</li>
+                <li>🐕 <strong>Relatórios mensais</strong> dos animais ajudados</li>
+                <li>🌳 <strong>Número de árvores</strong> plantadas através do projeto</li>
+                <li>📈 <strong>Métricas de impacto</strong> social e ambiental</li>
+                <li>🏥 <strong>Parcerias com ONGs</strong> e organizações ambientais</li>
+            </ul>
+            
+            <p>Você pode acompanhar nosso impacto em tempo real através das nossas redes sociais e relatórios mensais no blog.</p>
+        </section>
+
+        <!-- Call to Action -->
+        <div class="cta">
+            <h3>🤝 Como Você Pode Ajudar</h3>
+            <p>Não pedimos doações em dinheiro. Pedimos algo muito mais poderoso: <strong>sua participação ativa</strong> na construção de um mundo melhor!</p>
+            
+            <div class="cta-buttons">
+                <a href="loja.html" class="btn btn-white">🛒 Conheça Nossa Loja</a>
+                <a href="blog.html" class="btn btn-outline">📖 Leia Nosso Conteúdo</a>
+            </div>
+        </div>
+
+        <!-- Formas de Apoio -->
+        <section class="section">
+            <h2>💪 Formas de Nos Apoiar</h2>
+            
+            <div class="revenue-sources">
+                <div class="revenue-item">
+                    <div class="icon">🛒</div>
+                    <h4>Compre Nossos Produtos</h4>
+                    <p>Cada compra gera impacto direto para animais e meio ambiente</p>
+                </div>
+                
+                <div class="revenue-item">
+                    <div class="icon">📤</div>
+                    <h4>Compartilhe o Projeto</h4>
+                    <p>Divulgue nas redes sociais para alcançarmos mais pessoas</p>
+                </div>
+                
+                <div class="revenue-item">
+                    <div class="icon">👥</div>
+                    <h4>Participe da Comunidade</h4>
+                    <p>Engaje com nosso conteúdo e fortaleça nossa comunidade</p>
+                </div>
+                
+                <div class="revenue-item">
+                    <div class="icon">⭐</div>
+                    <h4>Seja um Embaixador</h4>
+                    <p>Indique amigos e familiares para expandir nosso impacto</p>
+                </div>
+            </div>
+
+            <p style="text-align: center; font-size: 1.2rem; color: var(--dark-blue); font-weight: 600; margin-top: 2rem;">
+                "Juntos somos mais fortes! Cada gesto conta na construção de um futuro melhor."
+            </p>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>💚 Faça Parte do Projeto Socializa</h3>
+            <p>Transforme o amor pelo seu pet em amor pelo mundo</p>
+            
+            <div class="social-links">
+                <a href="#" title="Instagram">📷</a>
+                <a href="#" title="Facebook">📘</a>
+                <a href="#" title="YouTube">📺</a>
+                <a href="#" title="WhatsApp">📱</a>
+            </div>
+            
+            <p style="opacity: 0.7; margin-top: 2rem;">
+                © 2025 SocializaPet - Projeto Socializa | Todos os direitos reservados
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

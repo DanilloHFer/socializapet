@@ -250,6 +250,100 @@
             color: var(--white);
         }
 
+        /* Search Box Styles */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 60px 18px 24px;
+            border: 3px solid var(--primary-pink);
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            background: var(--white);
+            color: var(--dark-blue);
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(242, 141, 178, 0.2);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 12px 35px rgba(5, 151, 242, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .search-input::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gradient-1);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 5px 15px rgba(242, 141, 178, 0.4);
+        }
+
+        .search-results-info {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 15px 25px;
+            background: var(--gradient-3);
+            color: var(--white);
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: none;
+        }
+
+        .clear-search {
+            background: var(--white);
+            color: var(--primary-pink);
+            border: 2px solid var(--primary-pink);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .clear-search:hover {
+            background: var(--primary-pink);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -520,9 +614,18 @@
             <button class="category-btn" onclick="filterPosts('Adoção')">❤️ Adoção</button>
         </div>
 
-
-
-
+        <!-- Search Container -->
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Digite aqui para pesquisar... Ex: Golden, Cuidados, Alimentação...">
+                <button class="search-btn" onclick="searchPosts()">
+                    🔍
+                </button>
+            </div>
+            <div class="search-results-info" id="searchResultsInfo">
+                <!-- Informações dos resultados aparecerão aqui -->
+            </div>
+        </div>
 
         <!-- Blog Grid -->
         <div class="blog-grid" id="blogGrid">
@@ -643,6 +746,10 @@
 
         // Filter Posts
         function filterPosts(category) {
+            // Clear search when filtering by category
+            document.getElementById('searchInput').value = '';
+            hideSearchResults();
+            
             // Update active button
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -656,6 +763,73 @@
                 const filtered = blogPosts.filter(post => post.category === category);
                 displayPosts(filtered);
             }
+        }
+
+        // Search Posts Function
+        function searchPosts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                displayPosts(blogPosts);
+                hideSearchResults();
+                return;
+            }
+            
+            const searchResults = blogPosts.filter(post => {
+                return (
+                    post.title.toLowerCase().includes(searchTerm) ||
+                    post.content.toLowerCase().includes(searchTerm) ||
+                    post.category.toLowerCase().includes(searchTerm) ||
+                    post.author.toLowerCase().includes(searchTerm) ||
+                    (post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
+                );
+            });
+            
+            displayPosts(searchResults);
+            showSearchResults(searchTerm, searchResults.length);
+            
+            // Clear category filter when searching
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        }
+
+        // Show Search Results Info
+        function showSearchResults(searchTerm, resultCount) {
+            const resultsInfo = document.getElementById('searchResultsInfo');
+            resultsInfo.style.display = 'block';
+            
+            if (resultCount === 0) {
+                resultsInfo.innerHTML = `
+                    😔 Nenhum resultado encontrado para "<strong>${searchTerm}</strong>"
+                    <a href="javascript:void(0)" class="clear-search" onclick="clearSearch()">❌ Limpar Pesquisa</a>
+                `;
+                resultsInfo.style.background = 'var(--gradient-2)';
+            } else {
+                resultsInfo.innerHTML = `
+                    ✅ Encontramos <strong>${resultCount}</strong> resultado${resultCount > 1 ? 's' : ''} para "<strong>${searchTerm}</strong>"
+                    <a href="javascript:void(0)" class="clear-search" onclick="clearSearch()">❌ Limpar Pesquisa</a>
+                `;
+                resultsInfo.style.background = 'var(--gradient-4)';
+            }
+        }
+
+        // Hide Search Results Info
+        function hideSearchResults() {
+            document.getElementById('searchResultsInfo').style.display = 'none';
+        }
+
+        // Clear Search
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            displayPosts(blogPosts);
+            hideSearchResults();
+            
+            // Reactivate 'Todos' button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('.category-btn[onclick="filterPosts(\'all\')"]').classList.add('active');
         }
 
         // Initialize with sample posts if empty
@@ -862,6 +1036,26 @@
         document.addEventListener('DOMContentLoaded', function() {
             initializeBlogPosts();
             loadDynamicContent();
+            
+            // Initialize search functionality
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                // Search on Enter key
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchPosts();
+                    }
+                });
+                
+                // Optional: Real-time search while typing (uncomment to enable)
+                /*
+                searchInput.addEventListener('input', function() {
+                    if (this.value.length > 2 || this.value.length === 0) {
+                        searchPosts();
+                    }
+                });
+                */
+            }
         });
     </script>
 </body>

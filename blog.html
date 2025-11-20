@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - SocializaPet</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/SocializaPet/assets/main/favicon.png">
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="64x64" href="imagens/favicon-64x64.png?v=2">
+    <link rel="icon" type="image/png" sizes="48x48" href="imagens/favicon-48x48.png?v=2">
+    <link rel="icon" type="image/png" sizes="40x40" href="imagens/favicon-40x40.png?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="imagens/favicon-40x40.png?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="imagens/favicon-40x40.png?v=2">
+    <link rel="apple-touch-icon" href="imagens/apple-touch-icon.png?v=2">
+    <link rel="shortcut icon" type="image/x-icon" href="imagens/favicon-64x64.png?v=2">
+    <meta name="theme-color" content="#F28DB2">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Quicksand:wght@400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
@@ -121,98 +129,7 @@
             opacity: 0.95;
         }
 
-        /* Admin Panel */
-        .admin-panel {
-            background: var(--white);
-            max-width: 1200px;
-            margin: -50px auto 2rem;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 10;
-        }
 
-        .admin-toggle {
-            background: var(--primary-pink);
-            color: var(--white);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .admin-toggle:hover {
-            background: var(--neon-pink);
-            transform: translateY(-2px);
-        }
-
-        .admin-form {
-            display: none;
-            background: linear-gradient(135deg, rgba(242, 141, 178, 0.1), rgba(5, 151, 242, 0.1));
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-        }
-
-        .admin-form.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--dark-blue);
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary-pink);
-            box-shadow: 0 0 10px rgba(242, 141, 178, 0.3);
-        }
-
-        .form-group textarea {
-            height: 120px;
-            resize: vertical;
-        }
-
-        .btn-publish {
-            background: var(--gradient-1);
-            color: var(--white);
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-publish:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(242, 141, 178, 0.4);
-        }
 
         /* Blog Grid */
         .blog-container {
@@ -297,25 +214,15 @@
             color: var(--neon-pink);
         }
 
-        .delete-post {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 0, 0, 0.8);
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: none;
-            font-size: 18px;
-            line-height: 1;
+
+
+        .login-error {
+            color: var(--danger);
+            margin-top: 1rem;
+            font-weight: 600;
         }
 
-        .blog-card:hover .delete-post {
-            display: block;
-        }
+
 
         /* Categories Filter */
         .categories-filter {
@@ -350,6 +257,196 @@
             color: #666;
         }
 
+        /* Modal de Post Completo */
+        .post-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .post-modal.active {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10001;
+        }
+
+        .modal-close {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        .modal-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            overflow: auto;
+        }
+
+        .modal-image {
+            flex: 1;
+            max-width: 50%;
+            padding-right: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-body {
+            flex: 1;
+            max-width: 50%;
+            color: white;
+            overflow-y: auto;
+            max-height: 80vh;
+            padding: 20px;
+        }
+
+        .modal-category {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-pink), var(--secondary-blue));
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--primary-pink), var(--secondary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-meta {
+            font-size: 1rem;
+            color: #ccc;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .modal-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #f0f0f0;
+            text-align: justify;
+        }
+
+        .modal-text p {
+            margin-bottom: 20px;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .modal-content {
+                flex-direction: column;
+                padding: 20px 15px;
+            }
+
+            .modal-image {
+                max-width: 100%;
+                padding-right: 0;
+                padding-bottom: 30px;
+            }
+
+            .modal-body {
+                max-width: 100%;
+                max-height: none;
+            }
+
+            .modal-title {
+                font-size: 2rem;
+            }
+
+            .modal-close {
+                width: 40px;
+                height: 40px;
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-title {
+                font-size: 1.5rem;
+            }
+
+            .modal-text {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+        }
+
         .empty-state img {
             width: 200px;
             opacity: 0.5;
@@ -366,10 +463,7 @@
                 font-size: 1.1rem;
             }
 
-            .admin-panel {
-                margin: -30px 20px 2rem;
-                padding: 1.5rem;
-            }
+
 
             .blog-grid {
                 grid-template-columns: 1fr;
@@ -388,7 +482,7 @@
     <header class="header">
         <div class="header-content">
             <a href="index.html" class="logo">
-                <img src="imagens/socializapet-logo.png" alt="SocializaPet Logo">
+                <img src="imagens/socializapet-logo.png" alt="SocializaPet Logo" width="35" height="35" style="margin-right: 10px;">
                 Socializa<span style="color: var(--primary-pink);">Pet</span>
             </a>
             <nav>
@@ -410,63 +504,25 @@
         <p>🌟 Dicas especializadas, cuidados essenciais e muito amor pelos nossos amiguinhos! 🌟</p>
     </section>
 
-    <!-- Admin Panel -->
-    <div class="admin-panel">
-        <button class="admin-toggle" onclick="toggleAdminPanel()">👑 Painel do Administrador</button>
-        
-        <div class="admin-form" id="adminForm">
-            <h3 style="margin-bottom: 1.5rem; color: var(--dark-blue);">✨ Criar Nova Postagem</h3>
-            <form onsubmit="createPost(event)">
-                <div class="form-group">
-                    <label for="postTitle">📝 Título da Postagem</label>
-                    <input type="text" id="postTitle" required placeholder="Ex: 5 Dicas para Alimentação Saudável">
-                </div>
-                
-                <div class="form-group">
-                    <label for="postCategory">🏷️ Categoria</label>
-                    <select id="postCategory" required>
-                        <option value="">Selecione uma categoria</option>
-                        <option value="Alimentação">🍽️ Alimentação</option>
-                        <option value="Saúde">💚 Saúde</option>
-                        <option value="Comportamento">🐾 Comportamento</option>
-                        <option value="Cuidados">✨ Cuidados</option>
-                        <option value="Diversão">🎾 Diversão</option>
-                        <option value="Dicas Gerais">💡 Dicas Gerais</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="postImage">🖼️ URL da Imagem</label>
-                    <input type="url" id="postImage" placeholder="https://exemplo.com/imagem.jpg">
-                </div>
-                
-                <div class="form-group">
-                    <label for="postExcerpt">📄 Resumo/Prévia</label>
-                    <textarea id="postExcerpt" required placeholder="Escreva um resumo atrativo da sua postagem..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="postContent">📖 Conteúdo Completo</label>
-                    <textarea id="postContent" required placeholder="Escreva o conteúdo completo da postagem..." style="height: 200px;"></textarea>
-                </div>
-                
-                <button type="submit" class="btn-publish">🚀 Publicar Postagem</button>
-            </form>
-        </div>
-    </div>
+
 
     <!-- Blog Container -->
     <div class="blog-container">
         <!-- Categories Filter -->
         <div class="categories-filter">
-            <button class="category-btn active" onclick="filterPosts('all')">📋 Todas</button>
-            <button class="category-btn" onclick="filterPosts('Alimentação')">🍽️ Alimentação</button>
-            <button class="category-btn" onclick="filterPosts('Saúde')">💚 Saúde</button>
-            <button class="category-btn" onclick="filterPosts('Comportamento')">🐾 Comportamento</button>
-            <button class="category-btn" onclick="filterPosts('Cuidados')">✨ Cuidados</button>
-            <button class="category-btn" onclick="filterPosts('Diversão')">🎾 Diversão</button>
-            <button class="category-btn" onclick="filterPosts('Dicas Gerais')">💡 Dicas Gerais</button>
+            <button class="category-btn active" onclick="filterPosts('all')">🌟 Todos</button>
+            <button class="category-btn" onclick="filterPosts('Guia de Raças')">🐕 Guia de Raças</button>
+            <button class="category-btn" onclick="filterPosts('Cuidados')">💊 Cuidados</button>
+            <button class="category-btn" onclick="filterPosts('Treinamento')">🎾 Treinamento</button>
+            <button class="category-btn" onclick="filterPosts('Alimentação')">🍖 Alimentação</button>
+            <button class="category-btn" onclick="filterPosts('Saúde')">🏥 Saúde</button>
+            <button class="category-btn" onclick="filterPosts('Comportamento')">🧠 Comportamento</button>
+            <button class="category-btn" onclick="filterPosts('Adoção')">❤️ Adoção</button>
         </div>
+
+
+
+
 
         <!-- Blog Grid -->
         <div class="blog-grid" id="blogGrid">
@@ -476,7 +532,30 @@
         <!-- Empty State -->
         <div class="empty-state" id="emptyState" style="display: none;">
             <h3>🐾 Nenhuma postagem encontrada</h3>
-            <p>Que tal criar a primeira postagem no painel do administrador?</p>
+            <p>Em breve terá muito conteúdo interessante aqui!</p>
+        </div>
+    </div>
+
+    <!-- Modal de Post Completo -->
+    <div class="post-modal" id="postModal">
+        <div class="modal-overlay" onclick="closePostModal()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closePostModal()">
+                    <span>✕</span>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="modal-image">
+                    <img id="modalImage" src="" alt="">
+                </div>
+                <div class="modal-body">
+                    <div class="modal-category" id="modalCategory"></div>
+                    <h1 class="modal-title" id="modalTitle"></h1>
+                    <div class="modal-meta" id="modalMeta"></div>
+                    <div class="modal-text" id="modalContent"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -484,46 +563,7 @@
         // Sistema de Blog com Local Storage
         let blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
 
-        // Toggle Admin Panel
-        function toggleAdminPanel() {
-            const adminForm = document.getElementById('adminForm');
-            adminForm.classList.toggle('active');
-        }
 
-        // Create Post
-        function createPost(event) {
-            event.preventDefault();
-            
-            const title = document.getElementById('postTitle').value;
-            const category = document.getElementById('postCategory').value;
-            const image = document.getElementById('postImage').value || 'https://picsum.photos/400/250?random=' + Date.now();
-            const excerpt = document.getElementById('postExcerpt').value;
-            const content = document.getElementById('postContent').value;
-            
-            const newPost = {
-                id: Date.now(),
-                title,
-                category,
-                image,
-                excerpt,
-                content,
-                date: new Date().toLocaleDateString('pt-BR'),
-                author: 'Admin SocializaPet'
-            };
-            
-            blogPosts.unshift(newPost); // Adiciona no início
-            localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
-            
-            // Reset form
-            event.target.reset();
-            document.getElementById('adminForm').classList.remove('active');
-            
-            // Reload posts
-            displayPosts();
-            
-            // Success message
-            alert('✅ Postagem criada com sucesso!');
-        }
 
         // Display Posts
         function displayPosts(postsToShow = blogPosts) {
@@ -540,7 +580,7 @@
             
             blogGrid.innerHTML = postsToShow.map(post => `
                 <article class="blog-card" data-category="${post.category}">
-                    <button class="delete-post" onclick="deletePost(${post.id})" title="Deletar postagem">×</button>
+
                     <img src="${post.image}" alt="${post.title}" onerror="this.src='https://picsum.photos/400/250?random=1'">
                     <div class="blog-card-content">
                         <span class="blog-category">${post.category}</span>
@@ -548,30 +588,58 @@
                         <p>${post.excerpt}</p>
                         <div class="blog-meta">
                             <span>📅 ${post.date}</span>
-                            <a href="#" class="read-more" onclick="readPost(${post.id})">Leia Mais →</a>
+                            <a href="#" class="read-more" onclick="readPost(${post.id}); return false;">📖 Leia Mais →</a>
                         </div>
                     </div>
                 </article>
             `).join('');
         }
 
-        // Delete Post
-        function deletePost(id) {
-            if (confirm('❌ Tem certeza que deseja deletar esta postagem?')) {
-                blogPosts = blogPosts.filter(post => post.id !== id);
-                localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
-                displayPosts();
-                alert('🗑️ Postagem deletada com sucesso!');
-            }
-        }
 
-        // Read Post (Modal)
+
+
+
+        // Abrir modal com conteúdo completo do post
         function readPost(id) {
             const post = blogPosts.find(p => p.id === id);
-            if (post) {
-                alert(`📖 ${post.title}\n\n${post.content}\n\n📅 Publicado em: ${post.date}\n👤 Por: ${post.author}`);
-            }
+            if (!post) return;
+            
+            // Preencher dados do modal
+            document.getElementById('modalImage').src = post.image;
+            document.getElementById('modalImage').alt = post.title;
+            document.getElementById('modalCategory').textContent = post.category;
+            document.getElementById('modalTitle').textContent = post.title;
+            document.getElementById('modalMeta').innerHTML = `
+                <span>📅 ${post.date}</span>
+                <span>👤 ${post.author}</span>
+            `;
+            
+            // Formatar conteúdo com parágrafos
+            const formattedContent = post.content.split('\n').map(paragraph => 
+                paragraph.trim() ? `<p>${paragraph.trim()}</p>` : ''
+            ).join('');
+            
+            document.getElementById('modalContent').innerHTML = formattedContent || `<p>${post.content}</p>`;
+            
+            // Mostrar modal
+            const modal = document.getElementById('postModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
+
+        // Fechar modal
+        function closePostModal() {
+            const modal = document.getElementById('postModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Fechar modal com ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePostModal();
+            }
+        });
 
         // Filter Posts
         function filterPosts(category) {
@@ -613,6 +681,36 @@
                         content: "Exercícios são essenciais para pets saudáveis. Experimente: jogos de buscar, caminhadas regulares, brinquedos interativos, aulas de adestramento e brincadeiras no quintal. Cada pet tem suas preferências!",
                         date: new Date().toLocaleDateString('pt-BR'),
                         author: "Admin SocializaPet"
+                    },
+                    {
+                        id: 3,
+                        title: "🐕 Golden Retriever: Tudo sobre esta Raça Incrível",
+                        category: "Guia de Raças",
+                        image: "https://picsum.photos/400/250?random=3",
+                        excerpt: "Conheça todas as características, cuidados e temperamento do Golden Retriever. Uma das raças mais carinhosas e leais do mundo!",
+                        content: "O Golden Retriever é conhecido por sua personalidade amigável e leal. Características principais: Porte médio a grande, pelagem dourada, muito inteligente, ótimo com crianças, necessita exercícios regulares, expectativa de vida de 10-12 anos. Cuidados especiais: escovação regular, exercícios diários, alimentação balanceada.",
+                        date: new Date().toLocaleDateString('pt-BR'),
+                        author: "Admin SocializaPet"
+                    },
+                    {
+                        id: 4,
+                        title: "🐱 Siamês: O Gato de Personalidade Única",
+                        category: "Guia de Raças",
+                        image: "https://picsum.photos/400/250?random=4",
+                        excerpt: "Descubra os segredos da raça Siamês: comportamento, cuidados especiais e como criar um vínculo forte com estes felinos especiais.",
+                        content: "O Siamês é uma das raças mais antigas e distintivas de gatos. Características: Corpo esbelto, olhos azuis intensos, muito vocal e comunicativo, extremamente inteligente, apegado ao dono, ativo e brincalhão. Cuidados: necessita de estímulo mental, gosta de companhia, pelagem fácil de cuidar, check-ups veterinários regulares.",
+                        date: new Date().toLocaleDateString('pt-BR'),
+                        author: "Admin SocializaPet"
+                    },
+                    {
+                        id: 5,
+                        title: "🐕 Labrador: O Companheiro Perfeito para Famílias",
+                        category: "Guia de Raças",
+                        image: "https://picsum.photos/400/250?random=5",
+                        excerpt: "Tudo o que você precisa saber sobre o Labrador: temperamento dócil, cuidados essenciais e por que são ideais para famílias com crianças.",
+                        content: "O Labrador é uma das raças mais populares do mundo. Características: Temperamento dócil e amigável, excelente com crianças, muito leal, porte médio-grande, pelagem resistente à água, alta energia. Necessidades: exercícios diários intensos, alimentação controlada (tendem ao sobrepeso), socialização desde cedo, treinamento positivo.",
+                        date: new Date().toLocaleDateString('pt-BR'),
+                        author: "Admin SocializaPet"
                     }
                 ];
                 
@@ -621,9 +719,72 @@
             }
         }
 
-        // Initialize page
+
+
+
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--gradient-1);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideInRight 0.3s ease-out;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            `;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideInRight 0.3s ease-out reverse';
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize with sample posts if needed
+        function initializeBlogPosts() {
+            // Load posts from both admin panel and main blog storage
+            const adminPosts = JSON.parse(localStorage.getItem('socializaPetPosts')) || [];
+            const mainPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+            
+            // Merge and deduplicate
+            const allPosts = [...adminPosts, ...mainPosts];
+            blogPosts = allPosts.filter((post, index, self) => 
+                index === self.findIndex(p => p.id === post.id)
+            );
+            
+            // If no posts exist, add sample posts
+            if (blogPosts.length === 0) {
+                initializeSamplePosts();
+            }
+        }
+
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            initializeSamplePosts();
+            initializeBlogPosts();
             displayPosts();
         });
     </script>

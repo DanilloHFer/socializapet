@@ -1380,6 +1380,118 @@
                 toggleCart();
             }
         });
+
+        // =============== CONTENT MANAGEMENT SYSTEM ===============
+        // Load dynamic content from admin panel on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDynamicContent();
+        });
+
+        function loadDynamicContent() {
+            loadProducts();
+            loadSiteSettings();
+            loadSiteContent();
+        }
+
+        // Load products from admin panel
+        function loadProducts() {
+            const products = JSON.parse(localStorage.getItem('siteProducts') || localStorage.getItem('socializaPetProducts')) || [];
+            
+            if (products.length > 0) {
+                const productGrid = document.querySelector('.shop-grid');
+                if (productGrid) {
+                    productGrid.innerHTML = products.map(product => `
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="${product.image}" alt="${product.name}" onerror="this.src='https://picsum.photos/300/280?random=${Math.floor(Math.random() * 100)}'">
+                                <div class="product-overlay">
+                                    <button class="btn-view" onclick="viewProduct(${JSON.stringify(product).replace(/"/g, '&quot;')})">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-cart" onclick="addToCart(${product.id || Math.random()}, '${product.name}', ${product.price})">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-name">${product.name}</h3>
+                                <p class="product-description">${product.description}</p>
+                                <div class="product-footer">
+                                    <span class="product-price">R$ ${typeof product.price === 'number' ? product.price.toFixed(2) : parseFloat(product.price).toFixed(2)}</span>
+                                    <div class="product-actions">
+                                        <button class="btn-favorite">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    // Update product count
+                    const productCount = document.querySelector('.shop-header p');
+                    if (productCount) {
+                        productCount.textContent = `Encontramos ${products.length} produto${products.length > 1 ? 's' : ''} para você!`;
+                    }
+                }
+            }
+        }
+
+        // Load site settings (colors, etc.)
+        function loadSiteSettings() {
+            const settings = JSON.parse(localStorage.getItem('siteSettings') || localStorage.getItem('socializaPetSettings')) || {};
+            
+            // Update CSS custom properties for colors
+            if (settings.primaryColor || settings.secondaryColor) {
+                const root = document.documentElement;
+                if (settings.primaryColor) {
+                    root.style.setProperty('--primary-pink', settings.primaryColor);
+                }
+                if (settings.secondaryColor) {
+                    root.style.setProperty('--primary-blue', settings.secondaryColor);
+                }
+            }
+        }
+
+        // Load site content
+        function loadSiteContent() {
+            const content = JSON.parse(localStorage.getItem('siteContent') || localStorage.getItem('socializaPetContent')) || {};
+            
+            // Update page title
+            if (content.title) {
+                document.title = `Loja - ${content.title}`;
+                
+                // Update logo text if exists
+                const logoText = document.querySelector('.logo');
+                if (logoText && content.title) {
+                    logoText.innerHTML = `${content.title.replace('Pet', '<span style="color: var(--primary-pink);">Pet</span>')}`;
+                }
+            }
+            
+            // Update WhatsApp contact info
+            if (content.whatsapp) {
+                window.siteWhatsApp = content.whatsapp;
+            }
+        }
+
+        // Enhanced view product function
+        function viewProduct(product) {
+            const modal = document.getElementById('productModal');
+            const modalImage = document.getElementById('modalProductImage');
+            const modalName = document.getElementById('modalProductName');
+            const modalPrice = document.getElementById('modalProductPrice');
+            const modalDescription = document.getElementById('modalProductDescription');
+            
+            if (modal && modalImage && modalName && modalPrice && modalDescription) {
+                modalImage.src = product.image;
+                modalImage.alt = product.name;
+                modalName.textContent = product.name;
+                modalPrice.textContent = `R$ ${typeof product.price === 'number' ? product.price.toFixed(2) : parseFloat(product.price).toFixed(2)}`;
+                modalDescription.textContent = product.description;
+                
+                modal.style.display = 'block';
+            }
+        }
     </script>
 </body>
 </html>

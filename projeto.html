@@ -587,5 +587,55 @@
             </p>
         </div>
     </footer>
+
+    <script>
+        // =============== CONTENT MANAGEMENT SYSTEM ===============
+        // Load dynamic content from admin panel on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDynamicContent();
+        });
+
+        function loadDynamicContent() {
+            loadSiteSettings();
+            loadSiteContent();
+        }
+
+        // Load site settings (colors, etc.)
+        function loadSiteSettings() {
+            const settings = JSON.parse(localStorage.getItem('siteSettings') || localStorage.getItem('socializaPetSettings')) || {};
+            
+            // Update CSS custom properties for colors
+            if (settings.primaryColor || settings.secondaryColor) {
+                const root = document.documentElement;
+                if (settings.primaryColor) {
+                    root.style.setProperty('--primary-pink', settings.primaryColor);
+                }
+                if (settings.secondaryColor) {
+                    root.style.setProperty('--primary-blue', settings.secondaryColor);
+                }
+            }
+        }
+
+        // Load site content
+        function loadSiteContent() {
+            const content = JSON.parse(localStorage.getItem('siteContent') || localStorage.getItem('socializaPetContent')) || {};
+            
+            // Update page title
+            if (content.title) {
+                document.title = `Projeto Socializa - ${content.title}`;
+                
+                // Update logo text if exists
+                const logoText = document.querySelector('.logo');
+                if (logoText && content.title) {
+                    logoText.innerHTML = `${content.title.replace('Pet', '<span style="color: var(--primary-pink);">Pet</span>')}`;
+                }
+            }
+            
+            // Update WhatsApp contact info
+            if (content.whatsapp) {
+                window.siteWhatsApp = content.whatsapp;
+            }
+        }
+    </script>
 </body>
 </html>

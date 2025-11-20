@@ -764,28 +764,104 @@
         `;
         document.head.appendChild(style);
 
-        // Initialize with sample posts if needed
+        // Initialize with posts from admin panel or sample posts
         function initializeBlogPosts() {
-            // Load posts from both admin panel and main blog storage
-            const adminPosts = JSON.parse(localStorage.getItem('socializaPetPosts')) || [];
-            const mainPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+            // Verificar se há sincronização do painel admin
+            const blogSynced = localStorage.getItem('blogSynced');
             
-            // Merge and deduplicate
-            const allPosts = [...adminPosts, ...mainPosts];
-            blogPosts = allPosts.filter((post, index, self) => 
-                index === self.findIndex(p => p.id === post.id)
-            );
+            if (blogSynced) {
+                // Se foi sincronizado, carregar apenas do blog principal
+                blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+            } else {
+                // Se não foi sincronizado, carregar do admin ou criar samples
+                const adminPosts = JSON.parse(localStorage.getItem('socializaPetPosts')) || [];
+                
+                if (adminPosts.length > 0) {
+                    // Usar posts do admin se existirem
+                    blogPosts = adminPosts;
+                    localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+                } else {
+                    // Criar posts de exemplo apenas se não houver nada
+                    blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+                    if (blogPosts.length === 0) {
+                        initializeSamplePosts();
+                    }
+                }
+            }
+        }
+
+        // =============== CONTENT MANAGEMENT SYSTEM ===============
+        // Load dynamic content from admin panel
+        function loadDynamicContent() {
+            loadPosts();
+            loadSiteSettings();
+            loadSiteContent();
+        }
+
+        // Load posts from admin panel
+        function loadPosts() {
+            const adminPosts = JSON.parse(localStorage.getItem('adminPosts') || localStorage.getItem('socializaPetPosts')) || [];
             
-            // If no posts exist, add sample posts
-            if (blogPosts.length === 0) {
-                initializeSamplePosts();
+            if (adminPosts.length > 0) {
+                // Replace existing posts with admin posts
+                window.blogPosts = adminPosts.map(post => ({
+                    id: post.id,
+                    title: post.title,
+                    excerpt: post.content.substring(0, 150) + '...',
+                    content: post.content,
+                    author: post.author || 'Admin',
+                    date: post.date || new Date().toLocaleDateString('pt-BR'),
+                    image: post.image || 'https://picsum.photos/800/400?random=' + post.id,
+                    category: post.category || 'Geral',
+                    tags: post.tags || []
+                }));
+                
+                // Re-display posts with new content
+                displayPosts();
+            }
+        }
+
+        // Load site settings (colors, etc.)
+        function loadSiteSettings() {
+            const settings = JSON.parse(localStorage.getItem('siteSettings') || localStorage.getItem('socializaPetSettings')) || {};
+            
+            // Update CSS custom properties for colors
+            if (settings.primaryColor || settings.secondaryColor) {
+                const root = document.documentElement;
+                if (settings.primaryColor) {
+                    root.style.setProperty('--primary-pink', settings.primaryColor);
+                }
+                if (settings.secondaryColor) {
+                    root.style.setProperty('--primary-blue', settings.secondaryColor);
+                }
+            }
+        }
+
+        // Load site content
+        function loadSiteContent() {
+            const content = JSON.parse(localStorage.getItem('siteContent') || localStorage.getItem('socializaPetContent')) || {};
+            
+            // Update page title
+            if (content.title) {
+                document.title = `Blog - ${content.title}`;
+                
+                // Update logo text if exists
+                const logoText = document.querySelector('.logo');
+                if (logoText && content.title) {
+                    logoText.innerHTML = `${content.title.replace('Pet', '<span style="color: var(--primary-pink);">Pet</span>')}`;
+                }
+            }
+            
+            // Update WhatsApp contact info
+            if (content.whatsapp) {
+                window.siteWhatsApp = content.whatsapp;
             }
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             initializeBlogPosts();
-            displayPosts();
+            loadDynamicContent();
         });
     </script>
 </body>

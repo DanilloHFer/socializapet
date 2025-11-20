@@ -2912,6 +2912,177 @@
                 }
             }, 5000);
         }
+
+        // =============== CONTENT MANAGEMENT SYSTEM ===============
+        // Load dynamic content from admin panel on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDynamicContent();
+        });
+
+        function loadDynamicContent() {
+            loadBanners();
+            loadSiteContent();
+            loadSiteSettings();
+            loadGallery();
+        }
+
+        // Load banners from admin panel
+        function loadBanners() {
+            const banners = JSON.parse(localStorage.getItem('siteBanners') || localStorage.getItem('socializaPetBanners')) || [];
+            
+            if (banners.length > 0) {
+                const sliderContainer = document.querySelector('.hero-banner-slider');
+                const indicatorsContainer = document.querySelector('.hero-banner-indicators');
+                
+                if (sliderContainer && indicatorsContainer) {
+                    // Clear existing content
+                    sliderContainer.innerHTML = '';
+                    indicatorsContainer.innerHTML = '';
+                    
+                    // Add dynamic banners
+                    banners.forEach((banner, index) => {
+                        // Create slide
+                        const slide = document.createElement('div');
+                        slide.className = `hero-banner-slide ${index === 0 ? 'active' : ''}`;
+                        slide.innerHTML = `
+                            <img src="${banner.image}" alt="${banner.title}" onerror="this.src='https://picsum.photos/800/400?random=${index + 1}'">
+                            <div class="hero-banner-overlay">
+                                <div class="hero-banner-text">${banner.title}</div>
+                                <div class="hero-banner-subtitle">${banner.text}</div>
+                            </div>
+                        `;
+                        
+                        // Add click handler if banner has link
+                        if (banner.link) {
+                            slide.style.cursor = 'pointer';
+                            slide.addEventListener('click', () => {
+                                if (banner.link.startsWith('http')) {
+                                    window.open(banner.link, '_blank');
+                                } else {
+                                    window.location.href = banner.link;
+                                }
+                            });
+                        }
+                        
+                        sliderContainer.appendChild(slide);
+                        
+                        // Create indicator
+                        const indicator = document.createElement('div');
+                        indicator.className = `hero-banner-dot ${index === 0 ? 'active' : ''}`;
+                        indicator.setAttribute('data-slide', index);
+                        indicator.addEventListener('click', () => goToSlide(index));
+                        indicatorsContainer.appendChild(indicator);
+                    });
+                    
+                    // Update carousel variables
+                    updateCarouselElements();
+                }
+            }
+        }
+
+        // Load site content (titles, descriptions, etc.)
+        function loadSiteContent() {
+            const content = JSON.parse(localStorage.getItem('siteContent') || localStorage.getItem('socializaPetContent')) || {};
+            
+            // Update page title
+            if (content.title) {
+                document.title = `${content.title} - Seu Mundo Pet Conectado e Cheio de Amor!`;
+                
+                // Update logo text if exists
+                const logoText = document.querySelector('.logo');
+                if (logoText && content.title) {
+                    logoText.innerHTML = `${content.title.replace('Pet', '<span style="color: var(--primary-pink);">Pet</span>')}`;
+                }
+            }
+            
+            // Update about section
+            if (content.about) {
+                const aboutText = document.querySelector('#sobre .about-text p');
+                if (aboutText) {
+                    aboutText.textContent = content.about;
+                }
+            }
+            
+            // Update contact info for WhatsApp
+            if (content.whatsapp) {
+                window.siteWhatsApp = content.whatsapp;
+            }
+        }
+
+        // Load site settings (colors, stats, etc.)
+        function loadSiteSettings() {
+            const settings = JSON.parse(localStorage.getItem('siteSettings') || localStorage.getItem('socializaPetSettings')) || {};
+            
+            // Update CSS custom properties for colors
+            if (settings.primaryColor || settings.secondaryColor) {
+                const root = document.documentElement;
+                if (settings.primaryColor) {
+                    root.style.setProperty('--primary-pink', settings.primaryColor);
+                }
+                if (settings.secondaryColor) {
+                    root.style.setProperty('--primary-blue', settings.secondaryColor);
+                }
+            }
+            
+            // Update statistics in hero section
+            const statsElements = document.querySelectorAll('.hero-stat-number');
+            if (statsElements.length >= 3) {
+                if (settings.adoptedPets) statsElements[2].textContent = settings.adoptedPets + '+';
+                if (settings.partners) statsElements[1].textContent = settings.partners + '+';
+                if (settings.happyFamilies) statsElements[0].textContent = settings.happyFamilies + 'K+';
+            }
+        }
+
+        // Load gallery images
+        function loadGallery() {
+            const gallery = JSON.parse(localStorage.getItem('siteGallery') || localStorage.getItem('socializaPetGallery')) || [];
+            
+            if (gallery.length > 0) {
+                const galleryGrid = document.querySelector('.gallery-grid');
+                if (galleryGrid) {
+                    // Take first 6 images for homepage
+                    const limitedGallery = gallery.slice(0, 6);
+                    galleryGrid.innerHTML = limitedGallery.map(item => `
+                        <div class="gallery-item">
+                            <img src="${item.image}" alt="${item.title}" onerror="this.src='https://picsum.photos/300/280?random=${Math.floor(Math.random() * 100)}'">
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        // Update carousel elements after dynamic loading
+        function updateCarouselElements() {
+            const slides = document.querySelectorAll('.hero-banner-slide');
+            const dots = document.querySelectorAll('.hero-banner-dot');
+            
+            if (slides.length > 1) {
+                let currentSlide = 0;
+                
+                function showSlide(index) {
+                    slides.forEach(slide => slide.classList.remove('active'));
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    
+                    if (slides[index] && dots[index]) {
+                        slides[index].classList.add('active');
+                        dots[index].classList.add('active');
+                    }
+                }
+                
+                function nextSlide() {
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    showSlide(currentSlide);
+                }
+                
+                window.goToSlide = function(index) {
+                    currentSlide = index;
+                    showSlide(currentSlide);
+                }
+                
+                // Auto-play carousel
+                setInterval(nextSlide, 5000);
+            }
+        }
     </script>
 </body>
 </html>

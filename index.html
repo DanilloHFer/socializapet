@@ -2039,7 +2039,6 @@
     <header class="header">
         <div class="header-content">
             <div class="logo">
-                <img src="imagens/socializapet-logo.png" alt="SocializaPet Logo" width="35" height="35" style="margin-right: 10px;">
                 Socializa<span style="color: var(--primary-pink);">Pet</span>
             </div>
             <nav>
@@ -2098,41 +2097,11 @@
                 <div class="hero-visual">
                     <!-- Banner Vertical -->
                     <div class="hero-banner-container">
-                        <div class="hero-banner-slider">
-                            <div class="hero-banner-slide active">
-                                <img src="imagens/banner1.jpg" alt="Banner 1">
-                                <div class="hero-banner-overlay">
-                                    <div class="hero-banner-text">Socializa<span style="color: var(--primary-pink);">Pet</span></div>
-                                    <div class="hero-banner-subtitle">Conectando corações peludos</div>
-                                </div>
-                            </div>
-                            <div class="hero-banner-slide">
-                                <img src="imagens/banner2.jpg" alt="Banner 2">
-                                <div class="hero-banner-overlay">
-                                    <div class="hero-banner-text">Encontros Especiais</div>
-                                    <div class="hero-banner-subtitle">Para pets únicos</div>
-                                </div>
-                            </div>
-                            <div class="hero-banner-slide">
-                                <img src="imagens/banner3.jpg" alt="Banner 3">
-                                <div class="hero-banner-overlay">
-                                    <div class="hero-banner-text">Cuidado Premium</div>
-                                    <div class="hero-banner-subtitle">Produtos de qualidade</div>
-                                </div>
-                            </div>
-                            <div class="hero-banner-slide">
-                                <img src="imagens/banner4.jpg" alt="Banner 4">
-                                <div class="hero-banner-overlay">
-                                    <div class="hero-banner-text">Comunidade Ativa</div>
-                                    <div class="hero-banner-subtitle">Milhares de pet lovers</div>
-                                </div>
-                            </div>
+                        <div class="hero-banner-slider" id="heroBannerSlider">
+                            <!-- Banners serão carregados dinamicamente pelo painel admin -->
                         </div>
-                        <div class="hero-banner-indicators">
-                            <div class="hero-banner-dot active" data-slide="0"></div>
-                            <div class="hero-banner-dot" data-slide="1"></div>
-                            <div class="hero-banner-dot" data-slide="2"></div>
-                            <div class="hero-banner-dot" data-slide="3"></div>
+                        <div class="hero-banner-indicators" id="heroBannerIndicators">
+                            <!-- Indicadores serão gerados dinamicamente -->
                         </div>
                     </div>
 
@@ -2186,17 +2155,9 @@
         <div class="container">
             <h2 class="section-title">💖 Aqueça o Coração</h2>
             <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="https://picsum.photos/300/280?random=10" alt="Pet fofo 1">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://picsum.photos/300/280?random=11" alt="Pet fofo 2">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://picsum.photos/300/280?random=12" alt="Pet fofo 3">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://picsum.photos/300/280?random=13" alt="Pet fofo 4">
+                <!-- Galeria será carregada dinamicamente pelo painel admin -->
+                <div id="homeGalleryGrid">
+                    <!-- Conteúdo carregado via JavaScript -->
                 </div>
             </div>
             <div class="gallery-btn">
@@ -2232,8 +2193,8 @@
                         </a>
                     </div>
                 </div>
-                <div class="about-image">
-                    <img src="https://picsum.photos/500/400?random=30" alt="SocializaPet">
+                <div class="about-image" id="aboutImageContainer">
+                    <!-- Imagem será carregada dinamicamente pelo painel admin -->
                 </div>
             </div>
         </div>
@@ -2736,10 +2697,50 @@
             }
         });
 
+        // Apply admin favicon
+        function applySiteFavicon() {
+            const settings = JSON.parse(localStorage.getItem('socializaPetSettings') || '{}');
+            if (settings.faviconUrl) {
+                // Remove existing admin favicons
+                const existingFavicons = document.querySelectorAll('link[data-admin-favicon="true"]');
+                existingFavicons.forEach(link => link.remove());
+                
+                // Add new favicon links
+                const head = document.head;
+                const sizes = ['16x16', '32x32', '48x48', '64x64'];
+                
+                sizes.forEach(size => {
+                    const favicon = document.createElement('link');
+                    favicon.rel = 'icon';
+                    favicon.type = 'image/png';
+                    favicon.sizes = size;
+                    favicon.href = settings.faviconUrl;
+                    favicon.setAttribute('data-admin-favicon', 'true');
+                    head.appendChild(favicon);
+                });
+                
+                // Apple touch icon
+                const appleTouchIcon = document.createElement('link');
+                appleTouchIcon.rel = 'apple-touch-icon';
+                appleTouchIcon.href = settings.faviconUrl;
+                appleTouchIcon.setAttribute('data-admin-favicon', 'true');
+                head.appendChild(appleTouchIcon);
+                
+                // Shortcut icon
+                const shortcutIcon = document.createElement('link');
+                shortcutIcon.rel = 'shortcut icon';
+                shortcutIcon.type = 'image/x-icon';
+                shortcutIcon.href = settings.faviconUrl;
+                shortcutIcon.setAttribute('data-admin-favicon', 'true');
+                head.appendChild(shortcutIcon);
+            }
+        }
+
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
             updateScrollProgress();
+            applySiteFavicon();
             
             // REMOVIDO: Sistema de rotação de texto
             
@@ -3083,6 +3084,152 @@
                 setInterval(nextSlide, 5000);
             }
         }
+
+        // =============== DYNAMIC CONTENT LOADING ===============
+        // Load content from admin panel
+        function loadDynamicContent() {
+            loadBanners();
+            loadBlogPosts();
+            loadGallery();
+        }
+
+        // Load banners
+        function loadBanners() {
+            const banners = JSON.parse(localStorage.getItem('socializaPetBanners')) || [];
+            const container = document.getElementById('heroBannerSlider');
+            const indicators = document.getElementById('heroBannerIndicators');
+            
+            if (banners.length > 0) {
+                // Load banners
+                container.innerHTML = banners.map((banner, index) => `
+                    <div class="hero-banner-slide ${index === 0 ? 'active' : ''}">
+                        <img src="${banner.image}" alt="${banner.title}" onerror="this.src='https://picsum.photos/800/400?random=${index + 1}'">
+                        <div class="hero-banner-overlay">
+                            <div class="hero-banner-text">${banner.title}</div>
+                            <div class="hero-banner-subtitle">${banner.description}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Load indicators
+                indicators.innerHTML = banners.map((_, index) => `
+                    <div class="hero-banner-dot ${index === 0 ? 'active' : ''}" data-slide="${index}"></div>
+                `).join('');
+
+                // Initialize carousel
+                initializeBannerCarousel();
+            } else {
+                // Default banner when no admin banners
+                container.innerHTML = `
+                    <div class="hero-banner-slide active">
+                        <img src="https://picsum.photos/800/400?random=1" alt="SocializaPet">
+                        <div class="hero-banner-overlay">
+                            <div class="hero-banner-text">Socializa<span style="color: var(--primary-pink);">Pet</span></div>
+                            <div class="hero-banner-subtitle">Conectando corações peludos</div>
+                        </div>
+                    </div>
+                `;
+                indicators.innerHTML = '<div class="hero-banner-dot active" data-slide="0"></div>';
+            }
+        }
+
+        // Load blog posts preview
+        function loadBlogPosts() {
+            const posts = JSON.parse(localStorage.getItem('socializaPetPosts')) || [];
+            const container = document.getElementById('homeBlogGrid');
+            
+            if (posts.length > 0) {
+                // Show first 2 posts
+                const postsToShow = posts.slice(0, 2);
+                container.innerHTML = postsToShow.map(post => `
+                    <div class="blog-card">
+                        <img src="${post.image}" alt="${post.title}" onerror="this.src='https://picsum.photos/400/220?random=' + Math.floor(Math.random() * 100)">
+                        <div class="blog-card-content">
+                            <h3>${post.title}</h3>
+                            <p>${post.excerpt || post.content.substring(0, 150) + '...'}</p>
+                            <a href="blog.html" class="btn-gradient">Leia Mais 📖</a>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                // Default posts when no admin posts
+                container.innerHTML = `
+                    <div class="blog-card">
+                        <img src="https://picsum.photos/400/220?random=1" alt="Dicas">
+                        <div class="blog-card-content">
+                            <h3>🍽️ Dicas Essenciais para seu Pet</h3>
+                            <p>Em breve, muito conteúdo interessante sobre cuidados com pets!</p>
+                            <a href="blog.html" class="btn-gradient">Leia Mais 📖</a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Load gallery preview
+        function loadGallery() {
+            const gallery = JSON.parse(localStorage.getItem('socializaPetGallery')) || [];
+            const container = document.getElementById('homeGalleryGrid');
+            
+            if (gallery.length > 0) {
+                // Show first 4 images
+                const imagesToShow = gallery.slice(0, 4);
+                container.innerHTML = imagesToShow.map(item => `
+                    <div class="gallery-item">
+                        <img src="${item.image}" alt="${item.title}" onerror="this.src='https://picsum.photos/300/280?random=' + Math.floor(Math.random() * 100)">
+                    </div>
+                `).join('');
+            } else {
+                // Default gallery when no admin images
+                container.innerHTML = Array.from({length: 4}, (_, i) => `
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/300/280?random=${10 + i}" alt="Pet ${i + 1}">
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Initialize banner carousel with dynamic content
+        function initializeBannerCarousel() {
+            const slides = document.querySelectorAll('.hero-banner-slide');
+            const dots = document.querySelectorAll('.hero-banner-dot');
+            let currentSlide = 0;
+
+            // Add click events to dots
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentSlide = index;
+                    showSlide(currentSlide);
+                });
+            });
+
+            function showSlide(index) {
+                // Hide all slides
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                
+                // Show current slide
+                if (slides[index] && dots[index]) {
+                    slides[index].classList.add('active');
+                    dots[index].classList.add('active');
+                }
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            // Auto-play carousel
+            if (slides.length > 1) {
+                setInterval(nextSlide, 5000);
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDynamicContent();
+        });
     </script>
 </body>
 </html>

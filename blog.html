@@ -547,26 +547,257 @@
             margin-bottom: 2rem;
         }
 
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-pink));
+            transition: left 0.3s ease;
+            z-index: 9999;
+            padding-top: 80px;
+        }
+
+        .mobile-nav.active {
+            left: 0;
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-nav li {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .mobile-nav a {
+            display: block;
+            color: var(--white);
+            text-decoration: none;
+            padding: 20px 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            padding-left: 40px;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
+            .header-content {
+                padding: 0 15px;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            .blog-hero {
+                padding: 120px 15px 60px;
+            }
+
             .blog-hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+                margin-bottom: 0.8rem;
             }
 
             .blog-hero p {
-                font-size: 1.1rem;
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
             }
 
+            .blog-container {
+                padding: 0 15px 60px;
+            }
 
+            .categories-filter {
+                gap: 0.8rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .category-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+
+            .search-container {
+                padding: 0 15px;
+                margin-bottom: 2rem;
+            }
+
+            .search-input {
+                padding: 15px 50px 15px 20px;
+                font-size: 1rem;
+            }
+
+            .search-btn {
+                width: 45px;
+                height: 45px;
+                right: 5px;
+            }
 
             .blog-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
+                margin-top: 1.5rem;
             }
 
-            .nav-menu {
+            .blog-card {
+                margin: 0;
+            }
+
+            .blog-card-content {
+                padding: 1.5rem;
+            }
+
+            .blog-card h3 {
+                font-size: 1.2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .blog-card p {
+                font-size: 0.9rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .blog-meta {
                 flex-direction: column;
-                gap: 1rem;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .search-results-info {
+                padding: 12px 20px;
+                font-size: 1rem;
+                margin: 0 15px 1.5rem 15px;
+            }
+
+            .clear-search {
+                margin-left: 0;
+                margin-top: 10px;
+                display: block;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 0 10px;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .logo img {
+                width: 30px;
+                height: 30px;
+            }
+
+            .blog-hero {
+                padding: 100px 10px 50px;
+            }
+
+            .blog-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .blog-hero p {
+                font-size: 0.9rem;
+            }
+
+            .blog-container {
+                padding: 0 10px 50px;
+            }
+
+            .categories-filter {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .category-btn {
+                width: 100%;
+                max-width: 250px;
+                text-align: center;
+            }
+
+            .search-container {
+                padding: 0 10px;
+            }
+
+            .blog-card img {
+                height: 200px;
+            }
+
+            .blog-card-content {
+                padding: 1.2rem;
+            }
+
+            .blog-card h3 {
+                font-size: 1.1rem;
+                line-height: 1.4;
+            }
+
+            .modal-content {
+                padding: 15px 10px;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            .modal-title {
+                font-size: 1.3rem;
+            }
+
+            .modal-text {
+                font-size: 0.9rem;
+                line-height: 1.6;
             }
         }
     </style>
@@ -589,8 +820,24 @@
                     <li><a href="#contato">📞 Contato</a></li>
                 </ul>
             </nav>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                ☰
+            </button>
         </div>
     </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <ul>
+            <li><a href="index.html" onclick="toggleMobileMenu()">🏠 Home</a></li>
+            <li><a href="index.html#sobre" onclick="toggleMobileMenu()">💝 Sobre Nós</a></li>
+            <li><a href="loja.html" onclick="toggleMobileMenu()">🛍️ Loja</a></li>
+            <li><a href="blog.html" onclick="toggleMobileMenu()">📝 Blog</a></li>
+            <li><a href="index.html#galeria" onclick="toggleMobileMenu()">📸 Galeria</a></li>
+            <li><a href="index.html#contato" onclick="toggleMobileMenu()">📞 Contato</a></li>
+        </ul>
+    </nav>
 
     <!-- Blog Hero -->
     <section class="blog-hero">
@@ -1031,6 +1278,34 @@
                 window.siteWhatsApp = content.whatsapp;
             }
         }
+
+        // Mobile Menu Functions
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            mobileNav.classList.toggle('active');
+            mobileOverlay.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            if (mobileNav.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close mobile menu on window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                const mobileNav = document.getElementById('mobileNav');
+                const mobileOverlay = document.getElementById('mobileOverlay');
+                
+                mobileNav.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {

@@ -688,9 +688,50 @@
 
     <script>
         // =============== CONTENT MANAGEMENT SYSTEM ===============
+        
+        // Apply admin favicon
+        function applySiteFavicon() {
+            const settings = JSON.parse(localStorage.getItem('socializaPetSettings') || '{}');
+            if (settings.faviconUrl) {
+                // Remove existing admin favicons
+                const existingFavicons = document.querySelectorAll('link[data-admin-favicon="true"]');
+                existingFavicons.forEach(link => link.remove());
+                
+                // Add new favicon links
+                const head = document.head;
+                const sizes = ['16x16', '32x32', '48x48', '64x64'];
+                
+                sizes.forEach(size => {
+                    const favicon = document.createElement('link');
+                    favicon.rel = 'icon';
+                    favicon.type = 'image/png';
+                    favicon.sizes = size;
+                    favicon.href = settings.faviconUrl;
+                    favicon.setAttribute('data-admin-favicon', 'true');
+                    head.appendChild(favicon);
+                });
+                
+                // Apple touch icon
+                const appleTouchIcon = document.createElement('link');
+                appleTouchIcon.rel = 'apple-touch-icon';
+                appleTouchIcon.href = settings.faviconUrl;
+                appleTouchIcon.setAttribute('data-admin-favicon', 'true');
+                head.appendChild(appleTouchIcon);
+                
+                // Shortcut icon
+                const shortcutIcon = document.createElement('link');
+                shortcutIcon.rel = 'shortcut icon';
+                shortcutIcon.type = 'image/x-icon';
+                shortcutIcon.href = settings.faviconUrl;
+                shortcutIcon.setAttribute('data-admin-favicon', 'true');
+                head.appendChild(shortcutIcon);
+            }
+        }
+        
         // Load dynamic content from admin panel on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadDynamicContent();
+            applySiteFavicon();
         });
 
         function loadDynamicContent() {

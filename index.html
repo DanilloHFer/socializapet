@@ -2929,7 +2929,11 @@
 
         // Load banners from admin panel
         function loadBanners() {
-            const banners = JSON.parse(localStorage.getItem('siteBanners') || localStorage.getItem('socializaPetBanners')) || [];
+            const allBanners = JSON.parse(localStorage.getItem('siteBanners') || localStorage.getItem('socializaPetBanners')) || [];
+            // Filter banners for home page
+            const banners = allBanners.filter(banner => 
+                banner.page === 'home' || banner.page === 'todas' || !banner.page // Fallback for old banners
+            );
             
             if (banners.length > 0) {
                 const sliderContainer = document.querySelector('.hero-banner-slider');
@@ -3095,7 +3099,11 @@
 
         // Load banners
         function loadBanners() {
-            const banners = JSON.parse(localStorage.getItem('socializaPetBanners')) || [];
+            const allBanners = JSON.parse(localStorage.getItem('socializaPetBanners')) || [];
+            // Filter banners for home page
+            const banners = allBanners.filter(banner => 
+                banner.page === 'home' || banner.page === 'todas' || !banner.page // Fallback for old banners
+            );
             const container = document.getElementById('heroBannerSlider');
             const indicators = document.getElementById('heroBannerIndicators');
             

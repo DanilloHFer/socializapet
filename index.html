@@ -18,7 +18,10 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- Fontes do sistema para independência -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -26,7 +29,8 @@
     <header class="header">
         <div class="header-content">
             <div class="logo" id="siteLogo">
-                Socializa<span style="color: var(--primary-pink);">Pet</span>
+                <img src="imagens/favicon-64x64.png.png" alt="Icone" class="logo-icon">
+                Socializa<span class="text-primary-pink">Pet</span>
             </div>
             <nav>
                 <ul class="nav-menu">
@@ -34,7 +38,7 @@
                     <li><a href="#sobre">💝 Sobre Nós</a></li>
                     <li><a href="loja.html">🛍️ Loja</a></li>
                     <li><a href="blog.html">📝 Blog</a></li>
-                    <li><a href="#galeria">📸 Galeria</a></li>
+
                     <li><a href="#contato">📞 Contato</a></li>
                 </ul>
                 <button class="hamburger" id="hamburger">
@@ -48,9 +52,9 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <!-- (Hero Content same as before) -->
         <div class="hero-container">
             <div class="hero-main">
-                <!-- Texto e CTAs -->
                 <div class="hero-text">
                     <h1 class="hero-title">Seu Mundo Pet Conectado e Cheio de Amor!</h1>
                     <p class="hero-subtitle">🌟 A plataforma completa que conecta você, seu pet e uma comunidade
@@ -72,28 +76,24 @@
                     </div>
 
                     <div class="hero-buttons">
-                        <a href="loja.html" class="hero-btn hero-btn-primary">
-                            🛍️ Explorar Loja
+                        <a href="https://wa.me/5511999999999?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20SocializaPet"
+                            target="_blank" class="hero-btn hero-btn-primary">
+                            <span style="font-size: 1.2rem; margin-right: 8px;">💬</span> Conversar no Whatsapp
                         </a>
                         <a href="blog.html" class="hero-btn hero-btn-secondary">
-                            📖 Ler Dicas
+                            <span style="font-size: 1.2rem; margin-right: 8px;">📖</span> Ler Dicas
                         </a>
                     </div>
                 </div>
 
-                <!-- Visual Interativo -->
                 <div class="hero-visual">
-                    <!-- Banner Vertical -->
                     <div class="hero-banner-container">
                         <div class="hero-banner-slider" id="heroBannerSlider">
-                            <!-- Banners serão carregados dinamicamente pelo painel admin -->
                         </div>
                         <div class="hero-banner-indicators" id="heroBannerIndicators">
-                            <!-- Indicadores serão gerados dinamicamente -->
                         </div>
                     </div>
 
-                    <!-- Estatísticas -->
                     <div class="hero-stats">
                         <div class="hero-stat">
                             <span class="hero-stat-number">50K+</span>
@@ -114,7 +114,7 @@
     </section>
 
     <!-- Blog Section -->
-    <section id="blog" class="section">
+    <section id="blog" class="section" style="background: var(--light-bg);">
         <div class="container">
             <h2 class="section-title">📚 Últimas Dicas do Blog</h2>
             <div id="homeBlogGrid" class="blog-grid">
@@ -123,22 +123,50 @@
         </div>
     </section>
 
-    <!-- Gallery Section -->
-    <section id="galeria" class="section gallery">
-        <div class="container">
-            <h2 class="section-title">💖 Aqueça o Coração</h2>
-            <!-- Fixed Structure: ID is on the grid container -->
-            <div id="homeGalleryGrid" class="gallery-grid">
-                <!-- Conteúdo carregado via JavaScript -->
-            </div>
-            <div class="gallery-btn">
-                <a href="#" class="btn btn-primary">📸 Ver Galeria Completa</a>
+    <!-- Quem Somos Cards Section (Replaces Products) -->
+    <section class="section">
+        <div class="quem-somos-container">
+            <h2 class="section-title">✨ Conheça a SocializaPet ✨</h2>
+            <div class="quem-somos-grid">
+                <!-- Card 1 - Pink -->
+                <a href="projeto-socializa.html" class="quem-somos-card qs-card-pink">
+                    <div class="qs-card-image-container">
+                        <img id="qs-img-1" src="https://placehold.co/300x500/png?text=Sua+Imagem" alt="História"
+                            class="qs-card-image">
+                    </div>
+                </a>
+
+                <!-- Card 2 - Blue -->
+                <a href="#sobre" class="quem-somos-card qs-card-blue">
+                    <div class="qs-card-image-container">
+                        <img id="qs-img-2" src="https://placehold.co/300x500/png?text=Sua+Imagem" alt="Valores"
+                            class="qs-card-image">
+                    </div>
+                </a>
+
+                <!-- Card 3 - Green -->
+                <a href="#sobre" class="quem-somos-card qs-card-green">
+                    <div class="qs-card-image-container">
+                        <img id="qs-img-3" src="https://placehold.co/300x500/png?text=Sua+Imagem" alt="Proteção"
+                            class="qs-card-image">
+                    </div>
+                </a>
+
+                <!-- Card 4 - Purple -->
+                <a href="#sobre" class="quem-somos-card qs-card-purple">
+                    <div class="qs-card-image-container">
+                        <img id="qs-img-4" src="https://placehold.co/300x500/png?text=Sua+Imagem" alt="SocializaPet"
+                            class="qs-card-image">
+                    </div>
+                </a>
             </div>
         </div>
     </section>
 
+    <!-- Gallery Section Removed -->
+
     <!-- Promotional Banner -->
-    <section class="promo-banner">
+    <section class="promo-banner" id="promo-banner-section">
         <div class="container">
             <h2>🎉 Mês do Aniversário Pet! 🎂</h2>
             <p>✨ Até 40% OFF em Toda a Loja - Descontos especiais para mimar seu melhor amigo ✨</p>
@@ -151,7 +179,7 @@
         <div class="container">
             <div class="about-content">
                 <div class="about-text">
-                    <h2>💝 Quem é a Socializa<span style="color: var(--primary-pink);">Pet</span>?</h2>
+                    <h2>💝 Quem é a Socializa<span class="text-primary-pink">Pet</span>?</h2>
                     <div id="aboutTextContainer">
                         <p>🌟 Somos muito mais que uma loja de produtos pet. Somos um movimento dedicado ao cuidado
                             integral: <strong>cuidamos dos seus pets, dos animais carentes e do nosso planeta.</strong>
@@ -167,8 +195,7 @@
                     </div>
 
                     <div style="margin-top: 2rem;">
-                        <a href="projeto-socializa.html" class="btn btn-primary"
-                            style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; text-decoration: none; border-radius: 25px; font-weight: 600; transition: all 0.3s ease;">
+                        <a href="projeto-socializa.html" class="btn-success-gradient">
                             🌍 Conheça Nosso Projeto
                         </a>
                     </div>
@@ -185,33 +212,38 @@
     <section id="contato" class="section">
         <div class="container">
             <h2 class="section-title">📞 Fale Conosco</h2>
-            <form class="contact-form" id="contactForm" onsubmit="sendContactToWhatsApp(event)">
-                <div class="form-group">
-                    <label for="contactName">👤 Nome Completo</label>
-                    <input type="text" id="contactName" name="contactName" placeholder="Digite seu nome..." required>
+            <div class="contact-container">
+                <div class="contact-image">
+                    <img src="https://placehold.co/600x800/png?text=Fale+Conosco" alt="Fale Conosco">
                 </div>
-                <div class="form-group">
-                    <label for="contactPhone">📱 Telefone/WhatsApp</label>
-                    <input type="tel" id="contactPhone" name="contactPhone" placeholder="(11) 99999-9999" required>
-                </div>
-                <div class="form-group">
-                    <label for="contactEmail">📧 E-mail</label>
-                    <input type="email" id="contactEmail" name="contactEmail" placeholder="Digite seu e-mail..."
-                        required>
-                </div>
-                <div class="form-group">
-                    <label for="contactMessage">💬 Mensagem</label>
-                    <textarea id="contactMessage" name="contactMessage"
-                        placeholder="Conte-nos como podemos ajudar você e seu pet... 🐾" required></textarea>
-                </div>
-                <div class="form-submit">
-                    <button type="submit" class="btn btn-primary">
-                        <span id="submitText">📤 Enviar Mensagem</span>
-                        <span id="loadingText" style="display: none;">⏳ Enviando...</span>
-                    </button>
-                </div>
-            </form>
-        </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="contactName">👤 Nome Completo</label>
+                        <input type="text" id="contactName" name="contactName" placeholder="Digite seu nome..."
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">📱 Telefone/WhatsApp</label>
+                        <input type="tel" id="contactPhone" name="contactPhone" placeholder="(11) 99999-9999" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">📧 E-mail</label>
+                        <input type="email" id="contactEmail" name="contactEmail" placeholder="Digite seu e-mail..."
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">💬 Mensagem</label>
+                        <textarea id="contactMessage" name="contactMessage"
+                            placeholder="Conte-nos como podemos ajudar você e seu pet... 🐾" required></textarea>
+                    </div>
+                    <div class="form-submit">
+                        <button type="submit" class="btn btn-primary">
+                            <span id="submitText">📤 Enviar Mensagem</span>
+                            <span id="loadingText" style="display: none;">⏳ Enviando...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
     </section>
 
     <!-- Footer -->
@@ -219,7 +251,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>🌟 Sobre a Socializa<span style="color: var(--primary-pink);">Pet</span></h3>
+                    <h3>🌟 Sobre a Socializa<span class="text-primary-pink">Pet</span></h3>
                     <p>Conectando o mundo pet com amor, qualidade e dedicação. Seu companheiro merece o melhor que a
                         vida pode oferecer! 💝</p>
                     <div class="social-links">
@@ -236,7 +268,7 @@
                         <li><a href="#sobre">Sobre Nós</a></li>
                         <li><a href="loja.html">Nossa Loja</a></li>
                         <li><a href="#blog">Blog & Dicas</a></li>
-                        <li><a href="#galeria">Galeria</a></li>
+
                         <li><a href="#contato">Contato</a></li>
                     </ul>
                 </div>
@@ -244,20 +276,43 @@
                     <h3>📱 Redes Sociais</h3>
                     <ul>
                         <li><a href="#">Instagram @socializapet</a></li>
-                        <li><a href="#">Facebook Socializa<span style="color: var(--primary-pink);">Pet</span></a></li>
+                        <li><a href="#">Facebook Socializa<span class="text-primary-pink">Pet</span></a></li>
                         <li><a href="#">WhatsApp (11) 99999-9999</a></li>
                         <li><a href="#">E-mail: contato@socializapet.com</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Socializa<span style="color: var(--primary-pink);">Pet</span>. Todos os direitos
+                <p>&copy; 2025 Socializa<span class="text-primary-pink">Pet</span>. Todos os direitos
                     reservados. Feito com 💖 para os pets!</p>
                 <p class="developer-credit">Desenvolvido por <a href="LINK_DO_SEU_INSTAGRAM" target="_blank">🚀
                         Enrike</a></p>
             </div>
         </div>
     </footer>
+
+    <!-- Modal de Post Completo (Copiado de blog.html) -->
+    <div class="post-modal" id="postModal">
+        <div class="modal-overlay" onclick="closePostModal()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closePostModal()">
+                    <span>✕</span>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="modal-image">
+                    <img id="modalImage" src="" alt="">
+                </div>
+                <div class="modal-body">
+                    <div class="modal-category" id="modalCategory"></div>
+                    <h1 class="modal-title" id="modalTitle"></h1>
+                    <div class="modal-meta" id="modalMeta"></div>
+                    <div class="modal-text" id="modalContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="js/script.js"></script>
